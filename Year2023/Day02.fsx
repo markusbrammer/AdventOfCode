@@ -1,10 +1,11 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day02
+open Year2023.Utils
 #endif
 
-open Common
 open System.Text.RegularExpressions
 
 let puzzle = ("2023", "02")
@@ -42,7 +43,7 @@ let parseGame (line: string) =
 let isPossible bag (_, draws) =
     Seq.forall (Map.forall (fun k v -> v <= Map.find k bag)) draws
 
-let runPart1 () =
+let part1 () =
     let bag = Map.ofList [ ("blue", 14); ("green", 13); ("red", 12) ]
 
     readLines input
@@ -61,15 +62,7 @@ let setPower counts =
     Seq.fold unionMax (Seq.head counts) (Seq.tail counts)
     |> Map.fold (fun pow _ c -> c * pow) 1
 
-let runPart2 () =
-    readLines input |> Seq.map (parseGame >> snd) |> Seq.sumBy setPower
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif
+let part2 () =
+    readLines input
+    |> Seq.map (parseGame >> snd)
+    |> Seq.sumBy setPower

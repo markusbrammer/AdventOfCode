@@ -1,12 +1,14 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day07
+open Year2022.Utils
 #endif
-
-open Common
 open System.Text.RegularExpressions
 
+let puzzle = ("2022", "07")
+let input = getInput puzzle
 
 type Element =
     | D of string * Element list
@@ -108,14 +110,18 @@ let rec getSizeOfDir =
 
 // let dirs = List.filter isDir es |> List.map getSizeOfDir |> List.concat
 
-let solvePart1 (input) =
-    generateFileSystem input
+let part1 () =
+    readAllLines input
+    |> generateFileSystem
     |> getSizeOfDir
     |> List.filter (snd >> (>) 100000)
     |> List.sumBy snd
 
-let solvePart2 (input) =
-    let sizes = generateFileSystem input |> getSizeOfDir
+let part2 () =
+    let sizes =
+        readAllLines input
+        |> generateFileSystem
+        |> getSizeOfDir
     
     let _, total = List.head sizes
     
@@ -123,21 +129,3 @@ let solvePart2 (input) =
     |> List.sortBy snd
     |> List.head
     |> snd
-
-// let solver =
-//     { parse = readAllLines
-//       part1 = solvePart1
-//       part2 = solvePart2 }
-
-let puzzle = ("2022", "07")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (solvePart1 (readAllLines input))
-    part2 = unitToStrWrap (solvePart2 (readAllLines input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

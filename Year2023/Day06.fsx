@@ -1,10 +1,10 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day06
+open Year2023.Utils
 #endif
-
-open Common
 
 let puzzle = ("2023", "06")
 let input = getInput puzzle
@@ -31,13 +31,11 @@ let possibleRuns race =
     Array.init (int race.time) (fun t -> (uint64 t) * (race.time - (uint64 t)))
     |> Array.sumBy (fun d -> if d > race.dist then 1 else 0)
 
-let runPart1 () =
+let part1 () =
     readLines input // ex.Split('\n')
     |> parse
     |> Array.map possibleRuns
     |> Array.fold (*) 1
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -49,20 +47,8 @@ let getNumber lineNo (inputLines: string seq) =
 let parse2 inputLines = 
     { time = getNumber 0 inputLines; dist = getNumber 1 inputLines }
 
-let runPart2 () = 
+let part2 () = 
     // ex.Split('\n')
     readLines input
     |> parse2
     |> possibleRuns 
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

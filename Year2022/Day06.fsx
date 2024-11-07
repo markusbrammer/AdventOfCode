@@ -1,10 +1,13 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day06
+open Year2022.Utils
 #endif
 
-open Common
+let puzzle = ("2022", "06")
+let input = getInput puzzle
 
 (* === PART 1 === *)
 
@@ -20,8 +23,8 @@ let getStartOfPacketMarker (inputLine: string) =
 
     f 1 <| Seq.toList inputLine
 
-let resultPart1 (inputLines: string list) =
-    match inputLines with
+let part1 () =
+    match readAllLines input with
     | [ s ] -> getStartOfPacketMarker s
     | _ -> failwith "Wrong input"
 
@@ -39,22 +42,7 @@ let getStartOfPacketMarker2 (inputLine: string) =
 
     f 1 <| Seq.toList inputLine
 
-let resultPart2 inputLines =
-    match inputLines with
+let part2 () =
+    match readAllLines input with
     | [ s ] -> getStartOfPacketMarker2 s
     | _ -> failwith "Wrong input"
-
-// let solver = { parse = readAllLines; part1 = resultPart1; part2 = resultPart2 }
-
-let puzzle = ("2022", "06")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (resultPart1 (readAllLines input))
-    part2 = unitToStrWrap (resultPart2 (readAllLines input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

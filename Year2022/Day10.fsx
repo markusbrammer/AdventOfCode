@@ -1,11 +1,15 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day10
+open Year2022.Utils
 #endif
 
 open System.Text.RegularExpressions
-open Common
+
+let puzzle = ("2022", "10")
+let input = getInput puzzle
 
 type Operation =
     | NoOp
@@ -34,8 +38,11 @@ let exec registerHistory op =
     | NoOp -> x :: registerHistory
     | AddX value -> x + value :: x :: registerHistory
 
-let solvePart1 (input) =
-    let registerHistory = List.fold exec [ 1 ] input |> List.rev
+let part1 () =
+    let registerHistory =
+        parse input
+        |> List.fold exec [ 1 ]
+        |> List.rev
 
     List.fold (fun sum cycle -> sum + cycle * List.item (cycle - 1) registerHistory) 0 [ 20; 60; 100; 140; 180; 220 ]
 
@@ -50,29 +57,12 @@ let fillCrtRow registerHistoryChunk =
 
     fillRow 1 registerHistoryChunk
 
-let solvePart2 (input) =
-    List.fold exec [ 1 ] input
+let part2 () =
+    parse input
+    |> List.fold exec [ 1 ]
     |> List.rev
     |> List.chunkBySize 40
     |> List.take 6
     |> List.map fillCrtRow
     |> String.concat "\n"
     |> (+) "FGCUZREC: \n"
-
-// let solver =
-//     { parse = parse
-//       part1 = solvePart1
-//       part2 = solvePart2 }
-
-let puzzle = ("2022", "10")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (solvePart1 (parse input))
-    part2 = unitToStrWrap (solvePart2 (parse input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

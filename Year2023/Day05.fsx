@@ -1,10 +1,13 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day05
+open Year2023.Utils
 #endif
 
-open Common
+// Don't care about "Incomplete pattern matches" warning.
+#nowarn "0025"
 
 let puzzle = ("2023", "05")
 let input = getInput puzzle
@@ -73,7 +76,7 @@ let rec toMaps m inputLines =
         Seq.skip (Seq.length mapLines + 2) inputLines
         |> toMaps (Seq.fold readAlmanacLine m' mapLines)
 
-let runPart1 () =
+let part1 () =
     let inputLines = readLines input
     let seeds = getSeeds (Seq.head inputLines)
 
@@ -81,8 +84,6 @@ let runPart1 () =
     |> toMaps (Map.ofSeq (Seq.map (fun s -> (s, s)) seeds))
     |> Map.values
     |> Seq.min
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -146,7 +147,7 @@ let rec applyAllMappings values inputLines =
 
         Seq.skip (Seq.length mapLines + 2) inputLines |> applyAllMappings values'
 
-let runPart2 () =
+let part2 () =
     // let inputLines = seq <| ex1.Split('\n')
     let inputLines = readLines input
     let srs = seedRanges (Seq.head inputLines)
@@ -154,15 +155,3 @@ let runPart2 () =
     applyAllMappings srs (Seq.skip 2 inputLines)
     |> List.minBy (fun r -> r.start)
     |> fun r -> r.start
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

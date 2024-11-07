@@ -1,16 +1,17 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day08
+open Year2022.Utils
 #endif
 
-open Common
+let puzzle = ("2022", "08")
+let input = getInput puzzle
 
 let parseLine = Seq.map charToInt >> Seq.toList
 
 let parse = parseEachLine parseLine >> Seq.toList
-
-
 
 let isVisible (iRow, iColumn) forest forestTransposed =
     let rec f h =
@@ -50,8 +51,8 @@ let filteri pred list =
     f 0 pred list
 
 
-let solvePart1 (input: int list list) =
-    let forest = input
+let part1 () =
+    let forest = parse input
     let forestTransposed = List.transpose forest
 
     List.mapi
@@ -85,8 +86,8 @@ let getViewDistance (iRow, iColumn) forest forestTransposed =
     * f treeHeight revColumn
 
 
-let solvePart2 (input) =
-    let forest = input
+let part2 () =
+    let forest = parse input
     let forestTransposed = List.transpose forest
 
     List.mapi
@@ -95,21 +96,3 @@ let solvePart2 (input) =
             |> List.max)
         forest
     |> List.max
-
-// let solver =
-//     { parse = parse
-//       part1 = solvePart1
-//       part2 = solvePart2 }
-
-let puzzle = ("2022", "08")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (solvePart1 (parse input))
-    part2 = unitToStrWrap (solvePart2 (parse input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

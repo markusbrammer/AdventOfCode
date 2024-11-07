@@ -1,10 +1,10 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day02
+open Year2022.Utils
 #endif
-
-open Common
 
 type Shape =
     | Rock
@@ -49,8 +49,10 @@ let resultOfGame (shape1, shape2) =
 let sumOfGame (_, shape2 as game) =
     resultOfGame game + getShapeScore (decryptPart1 shape2)
 
-let getResultPart1 inputLines =
-    List.sumBy sumOfGame <| collectPairs inputLines
+let part1 () =
+    readAllLines input
+    |> collectPairs
+    |> List.sumBy sumOfGame
 
 (* === PART 2 === *)
 
@@ -98,17 +100,7 @@ let deduceGame (shape1, encryptedOutcome) =
 let sumOfGamePart2 (_, outcome as game) =
     getOutcomeScore (decryptOutcome outcome) + getShapeScore (deduceGame game)
     
-let getResultPart2 inputList =
-    collectPairs inputList
+let part2 () =
+    readAllLines input 
+    |> collectPairs
     |> List.sumBy sumOfGamePart2
-
-// let solver = { parse = readAllLines; part1 = getResultPart1; part2 = getResultPart2}
-
-let solution = {
-    part1 = fun () -> getResultPart1 (readAllLines input) |> string
-    part2 = fun () -> getResultPart2 (readAllLines input) |> string
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

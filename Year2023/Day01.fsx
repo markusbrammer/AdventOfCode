@@ -1,11 +1,10 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day01
+open Year2023.Utils
 #endif
-
-open Common
-open System.Text.RegularExpressions
 
 let puzzle = ("2023", "01")
 let example = getExample puzzle
@@ -24,7 +23,7 @@ let isDigit (c: char) =
 let getCalibrationVal (s: string) =
     int $"%c{Seq.find isDigit s}%c{Seq.findBack isDigit s}"
 
-let solPart1 input =
+let part1 () =
     Seq.sumBy getCalibrationVal (readLines input)
 
 (****************************************************************************
@@ -49,19 +48,7 @@ let lettersToInt =
 let replaceSpelled (s: string) =
     Seq.fold (fun (snew: string) key -> snew.Replace(key, Map.find key lettersToInt)) s (Map.keys lettersToInt)
 
-let solPart2 input =
+let part2 () =
     (readLines input)
     |> Seq.map replaceSpelled
     |> Seq.sumBy getCalibrationVal
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution =
-    { part1 = fun () -> solPart1 input
-      part2 = fun () -> solPart2 input }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

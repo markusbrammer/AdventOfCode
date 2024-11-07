@@ -1,12 +1,16 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day11
+open Year2022.Utils
 #endif
 
 open System.IO
 open System.Text.RegularExpressions
-open Common
+
+let puzzle = ("2022", "11")
+let input = getInput puzzle
 
 type Monkey =
     { items: uint64 list
@@ -100,36 +104,24 @@ let rec runRounds f numberOfRounds (ms: Monkey list) =
     | 0 -> ms
     | n -> runRounds f (n - 1) <| runRound f 0 ms
 
-let solvePart1 (input: Monkey list) =
-    runRounds (fun x -> x / 3UL) 20 input
+let part1 () =
+    parse input
+    |> runRounds (fun x -> x / 3UL) 20
     |> List.map (fun m -> m.inspections)
     |> List.sortDescending
     |> List.take 2
     |> List.fold (*) 1UL
 
-let solvePart2 (input) =
-    let lcm = List.fold (*) 1UL <| List.map (fun (m: Monkey) -> m.divisibleBy) input
+let part2 () =
+    let parsedInput = parse input
+    let lcm =
+        parsedInput
+        |> List.map (fun (m: Monkey) -> m.divisibleBy)
+        |> List.fold (*) 1UL
 
-    runRounds (fun x -> x % lcm) 10000 input
+    parsedInput
+    |> runRounds (fun x -> x % lcm) 10000
     |> List.map (fun m -> m.inspections)
     |> List.sortDescending
     |> List.take 2
     |> List.fold (*) 1UL
-
-// let solver =
-//     { parse = parse
-//       part1 = solvePart1
-//       part2 = solvePart2 }
-
-let puzzle = ("2022", "11")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (solvePart1 (parse input))
-    part2 = unitToStrWrap (solvePart2 (parse input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

@@ -1,10 +1,10 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day03
+open Year2023.Utils
 #endif
-
-open Common
 
 let puzzle = ("2023", "03")
 let input = getInput puzzle
@@ -82,15 +82,13 @@ let entryVal =
     | Number (_, n) -> n
     | Symbol _ -> 0
 
-let runPart1 () =
+let part1 () =
     readLines input
     |> Seq.toList
     |> parse
     |> findPartNumbers
     |> List.concat
     |> List.sumBy entryVal
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -127,18 +125,8 @@ let rec getGearRatios =
 
     | _ -> 0
 
-let runPart2 () =
-    // ex1.Split('\n')
-    readLines input |> Seq.toList |> parse |> getGearRatios
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif
+let part2 () =
+    readLines input
+    |> Seq.toList
+    |> parse
+    |> getGearRatios

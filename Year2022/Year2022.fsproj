@@ -1,17 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>AdventOfCode.Year2022</RootNamespace>
+        <RootNamespace>Year2022</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Utils.fsx" />
         <Compile Include="Day*.fsx" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Common\Common.fsproj" />
     </ItemGroup>
 
     <ItemGroup>

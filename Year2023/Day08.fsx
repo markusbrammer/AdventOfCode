@@ -1,10 +1,14 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day08
+open Year2023.Utils
 #endif
 
-open Common
+// Don't care about "Incomplete pattern matches" warning.
+#nowarn "0025"
+
 open System.Text.RegularExpressions
 
 let puzzle = ("2023", "08")
@@ -72,7 +76,7 @@ let rec findZZZ (i, count) currentElem instructions elems =
 
         findZZZ (i', count + 1) next instructions elems
 
-let runPart1 () = 
+let part1 () = 
     // let inputLines = ex1.Split('\n')
     // let inputLines = ex2.Split('\n')
     let inputLines = readLines input
@@ -80,8 +84,6 @@ let runPart1 () =
     let elements = parseElements (Seq.skip 2 inputLines)
 
     findZZZ (0, 0) "AAA" instructions elements
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -133,7 +135,7 @@ let lcmList ls =
 
     lcm 1UL ls
 
-let runPart2 () =
+let part2 () =
     // let inputLines = ex3.Split('\n')
     let inputLines = readLines input
     let instructions = parseInstructions (Seq.head inputLines)
@@ -143,15 +145,3 @@ let runPart2 () =
     List.map (findEnd (0,0) instructions elements) startPos
     |> List.map uint64
     |> lcmList
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

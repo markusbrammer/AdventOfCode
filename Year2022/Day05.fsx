@@ -1,11 +1,15 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day05
+open Year2022.Utils
 #endif
 
-open Common
 open System.Text.RegularExpressions
+
+let puzzle = ("2022", "05")
+let input = getInput puzzle
 
 (* === PART 1 === *)
 
@@ -48,7 +52,8 @@ let rec move (quantity, stack1, stack2) map =
             |> Map.add stack2 (c1 :: cs2)
             |> move (q - 1, stack1, stack2)
 
-let resultPart1 inputLines =
+let part1 () =
+    let inputLines = readAllLines input
     let map = assignInitialCrates inputLines
     let commands = getCommands inputLines
 
@@ -72,7 +77,8 @@ let move2 (q, s1, s2) map =
         Map.add s1 cs1' map |> Map.add s2 (cs @ Map.find s2 map)
         
    
-let resultPart2 inputLines =
+let part2 () =
+    let inputLines = readAllLines input 
     let map = assignInitialCrates inputLines
     let commands = getCommands inputLines
 
@@ -85,17 +91,3 @@ let resultPart2 inputLines =
             | c :: _ -> crates + string c
             | _ -> crates)
         ""
-// let solver = { parse = readAllLines; part1 = resultPart1; part2 = resultPart2 }
-
-let puzzle = ("2022", "05")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (resultPart1 (readAllLines input))
-    part2 = unitToStrWrap (resultPart2 (readAllLines input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

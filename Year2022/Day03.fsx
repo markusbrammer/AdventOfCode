@@ -1,10 +1,13 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day03
+open Year2022.Utils
 #endif
 
-open Common
+let puzzle = ("2022", "03")
+let input = getInput puzzle
 
 (* === PART 1 === *)
 
@@ -29,8 +32,9 @@ let charToIntIndex (c: char) =
     else
         (int c) % 32 + 26
 
-let resultPart1 inputLines =
-    splitIntoCompartments inputLines
+let part1 () =
+    readAllLines input
+    |> splitIntoCompartments
     |> collectAllDuplicates
     |> List.map charToIntIndex
     |> List.sum
@@ -54,26 +58,10 @@ let findGroupIntersect ((r1, r2, r3): Group) =
     | [ c ] -> c
     | _ -> failwith "Multiple common items"
 
-let resultPart2 inputLines =
-    getRucksacks inputLines
+let part2 () =
+    readAllLines input
+    |> getRucksacks 
     |> getGroups
     |> List.map (findGroupIntersect >> charToIntIndex)
     |> List.sum
 
-
-(* === Print results === *)
-
-// let solver = { parse = readAllLines; part1 = resultPart1; part2 = resultPart2 }
-
-let puzzle = ("2022", "03")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (resultPart1 (readAllLines input))
-    part2 = unitToStrWrap (resultPart2 (readAllLines input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

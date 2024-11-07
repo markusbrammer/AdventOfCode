@@ -1,12 +1,15 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day09
+open Year2022.Utils
 #endif
 
-open Common
-
 open System.Text.RegularExpressions
+
+let puzzle = ("2022", "09")
+let input = getInput puzzle
 
 type Direction =
     | Up
@@ -77,13 +80,13 @@ and moveTail ((xt, yt): Position) ((xh, yh): Position) : Position =
     | xdiffa, ydiffa when xdiffa <= 1 && ydiffa <= 1 -> (xt, yt)
     | _ -> (xt + sign xdiff, yt + sign ydiff)
 
-let solvePart1 (input) =
-    List.fold
+let part1 () =
+    parse input
+    |> List.fold
         move1
         { positions = set [ (0, 0) ]
           headPos = (0, 0)
           tailPos = (0, 0) }
-        input
     |> fun state -> Set.count state.positions
 
 type State2 =
@@ -117,29 +120,11 @@ and moveTails hts (xh, yh) =
         moveTail (xt, yt) (xh, yh)
         |> fun tailHead -> tailHead :: moveTails htsrest tailHead
 
-let solvePart2 (input) =
-    input
+let part2 () =
+    parse input
     |> List.fold
         move2
         { positions = set [ (0, 0) ]
           headPos = (0, 0)
           tailPoss = List.init 9 (fun _ -> (0, 0)) }
     |> fun state -> Set.count state.positions
-
-// let solver =
-//     { parse = parse
-//       part1 = solvePart1
-//       part2 = solvePart2 }
-
-let puzzle = ("2022", "09")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (solvePart1 (parse input))
-    part2 = unitToStrWrap (solvePart2 (parse input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

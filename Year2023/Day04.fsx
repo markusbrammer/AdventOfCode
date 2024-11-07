@@ -1,10 +1,10 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day04
+open Year2023.Utils
 #endif
-
-open Common
 
 let puzzle = ("2023", "04")
 let input = getInput puzzle
@@ -44,13 +44,11 @@ let cardPoints (card: string) =
     else 
         0 
 
-let runPart1 () = 
+let part1 () = 
     // ex1.Split('\n')
     System.IO.File.ReadAllLines input
     |> Array.map cardPoints
     |> Array.sum 
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -66,21 +64,9 @@ let rec countCopies i (arr: (int * int) array) =
         |> Array.mapi (fun j (nj, cj) -> if i < j && j <= i + n then (nj, cj + c * 1) else (nj, cj)) 
         |> countCopies (i + 1) 
 
-let runPart2 () = 
+let part2 () = 
     // ex1.Split('\n')
     System.IO.File.ReadAllLines input
     |> Array.map (getWinningAndNumbers >> getMatches >> fun n -> (n, 1))
     |> countCopies 0
     |> Array.sumBy snd
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

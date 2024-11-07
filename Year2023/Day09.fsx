@@ -1,10 +1,10 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day09
+open Year2023.Utils
 #endif
-
-open Common
 
 let puzzle = ("2023", "09")
 let input = getInput puzzle
@@ -32,13 +32,11 @@ let rec repeatUntillZeros ls =
     else
         ls :: repeatUntillZeros sds
 
-let runPart1 () =
+let part1 () =
     // ex1.Split('\n')
     readLines input
     |> Seq.map (parse >> repeatUntillZeros >> List.map (List.rev) >> List.sumBy (List.head))
     |> Seq.sum
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -49,7 +47,7 @@ let extrapolateBack ls =
     |> List.rev
     |> List.head
 
-let runPart2 () =
+let part2 () =
     // ex1.Split('\n')
     readLines input
     |> Seq.map (
@@ -60,15 +58,3 @@ let runPart2 () =
         >> extrapolateBack
     )
     |> Seq.sum
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution = { part1 = runPart1; part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

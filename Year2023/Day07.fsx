@@ -1,10 +1,13 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
 module Year2023.Day07
+open Year2023.Utils
 #endif
 
-open Common
+// Don't care about "Incomplete pattern matches" warning.
+#nowarn "0025"
 
 let puzzle = ("2023", "07")
 let input = getInput puzzle
@@ -88,15 +91,13 @@ let sortCompare h1 h2 =
     | 0 -> compareCards h1.Hand h2.Hand
     | n -> n
 
-let runPart1 () =
+let part1 () =
     // ex.Split('\n')
     readLines input
     |> parse
     |> Seq.sortWith sortCompare
     |> Seq.mapi (fun i h -> (h.Bid, i + 1))
     |> Seq.fold (fun sum (b, i) -> sum + (b * i)) 0
-
-runPart1 ()
 
 (****************************************************************************
  ********************************** Part 2 **********************************
@@ -175,7 +176,7 @@ let sortCompare2 h1 h2 =
     | 0 -> compareCards2 h1.Hand2 h2.Hand2
     | n -> n
 
-let runPart2 () = 
+let part2 () = 
     // ex.Split('\n')
     readLines input
     |> parse2
@@ -183,17 +184,3 @@ let runPart2 () =
     // |> Seq.iter (printfn "%A")
     |> Seq.mapi (fun i h -> (h.Bid2, i + 1))
     |> Seq.fold (fun sum (b, i) -> sum + (b * i)) 0
-
-runPart2 ()
-
-(****************************************************************************
- ********************************* Solution *********************************
- ****************************************************************************)
-
-let solution =
-    { part1 = runPart1
-      part2 = runPart2 }
-
-#if INTERACTIVE
-printSol puzzle solution
-#endif

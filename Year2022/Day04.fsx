@@ -1,10 +1,14 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day04
+open Year2022.Utils
 #endif
 
-open Common
+
+let puzzle = ("2022", "04")
+let input = getInput puzzle
 
 (* === PART 1 === *)
 
@@ -30,8 +34,9 @@ let getCleaningPairs (inputLines: string list) =
 let eitherFullyContains (((sa1, sa2), (sb1, sb2)): CleaningPair) =
     (sa1 <= sb1 && sa2 >= sb2) || (sb1 <= sa1 && sb2 >= sa2)
 
-let getResultPart1 inputLines =
-    getCleaningPairs inputLines
+let part1 () =
+    readAllLines input
+    |> getCleaningPairs
     |> List.filter eitherFullyContains
     |> List.length
 
@@ -51,20 +56,8 @@ let getCleaningPairs2 (inputLines: string list) : CleaningPair2 list =
 let rangeOverlaps ((s1, s2): CleaningPair2) =
     not (Set.isEmpty <| Set.intersect s1 s2)
 
-let getResultPart2 inputLines =
-    getCleaningPairs2 inputLines |> List.filter rangeOverlaps |> List.length
-
-// let solver = { parse = readAllLines; part1 = getResultPart1; part2 = getResultPart2 }
-
-let puzzle = ("2022", "04")
-
-let input = getInput puzzle
-
-let solution = {
-    part1 = unitToStrWrap (getResultPart1 (readAllLines input))
-    part2 = unitToStrWrap (getResultPart2 (readAllLines input))
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif
+let part2 () =
+    readAllLines input
+    |> getCleaningPairs2
+    |> List.filter rangeOverlaps
+    |> List.length

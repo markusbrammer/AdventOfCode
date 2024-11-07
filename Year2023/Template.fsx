@@ -1,12 +1,13 @@
-#if INTERACTIVE
-#r "bin/debug/net7.0/Common.dll"
+#if INTERACTIVE 
+#load "Utils.fsx"
+open Utils
 #else
-module Year2023.Day00
+module Year2023.DayXX
+open Year2023.Utils
 #endif
 
-open Common
-
-let puzzle = ("2023", "00")
+let puzzle = ("2023", "XX")
+let example = getExample puzzle
 let input = getInput puzzle
 
 (****************************************************************************
@@ -15,15 +16,11 @@ let input = getInput puzzle
 
 let runPart1 () = "IMPLEMENT ME"
 
-runPart1 () 
-
 (****************************************************************************
  ********************************** Part 2 **********************************
  ****************************************************************************)
 
 let runPart2 () = "IMPLEMENT ME"
-
-runPart2 ()
 
 (****************************************************************************
  ********************************* Solution *********************************

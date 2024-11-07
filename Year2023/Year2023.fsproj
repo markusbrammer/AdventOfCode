@@ -2,15 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>Year2022</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Utils.fsx" />
     <Compile Include="Day*.fsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

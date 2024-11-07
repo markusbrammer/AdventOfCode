@@ -1,10 +1,10 @@
 #if INTERACTIVE 
-#r "bin/debug/net7.0/Common.dll"
+#load "Utils.fsx"
+open Utils
 #else
 module Year2022.Day01
+open Year2022.Utils
 #endif
-
-open Common
 
 let puzzle = ("2022", "01")
 
@@ -22,21 +22,17 @@ let sumOfInventories (calorieList: string list) =
     // Remember the last inventory. 
     |> fun (sums, lastInventorySum) -> lastInventorySum :: sums
 
-let solvePart1 ls = List.max <| sumOfInventories ls
+let part1 () =
+    readAllLines input
+    |> sumOfInventories
+    |> List.max
 
 (* === PART 2 === *)
 
-let solvePart2 input = 
-    sumOfInventories input
+let part2 () =
+    readAllLines input
+    |> sumOfInventories
     |> List.sortDescending
     |> List.take 3
     |> List.sum
 
-let solution = {
-    part1 = fun () -> solvePart1 (readAllLines input) |> string
-    part2 = fun () -> solvePart2 (readAllLines input) |> string
-}
-
-#if INTERACTIVE 
-printSol puzzle solution 
-#endif

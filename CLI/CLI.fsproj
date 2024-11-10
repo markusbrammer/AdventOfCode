@@ -8,5 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Year2022\Year2022.fsproj" />
+    <ProjectReference Include="..\Year2023\Year2023.fsproj" />
+    <ProjectReference Include="..\Year2024\Year2024.fsproj" />
   </ItemGroup>
 </Project>
